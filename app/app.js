@@ -4,8 +4,11 @@ function init() {
   enumeration.addEventListener("change", updateEnumeration)
 
   const fodder = document.getElementById("fodder")
-    fodder.addEventListener("beforeinput", (e) => checkInput(e, /[a-z]/i))
-    fodder.addEventListener("input", upcaseInput)
+  fodder.addEventListener("beforeinput", (e) => checkInput(e, /[a-z]/i))
+  fodder.addEventListener("input", upcaseInput)
+
+  const form = document.getElementById("form")
+  form.addEventListener("submit", shuffleLetters)
 }
 
 function checkInput(e, pattern) {
@@ -63,6 +66,27 @@ function addSolutionWord(solution, letterCount) {
     element.setAttributeNode(size)
     solution.appendChild(element)
   }
+}
+
+function shuffleLetters(e) {
+  e.preventDefault()
+  const fodder = document.getElementById("fodder")
+  const shuffled = document.getElementById("shuffled")
+
+  for (const letter of shuffleArray(fodder.value.split(""))) {
+    const element = document.createElement("span")
+    element.className = "letter"
+    const text = document.createTextNode(letter)
+    element.appendChild(text)
+    shuffled.appendChild(element)
+  }
+}
+
+function shuffleArray(array) {
+  return array
+    .map(value => ({ value, sort: Math.random() }))
+    .sort((a, b) => a.sort - b.sort)
+    .map(({ value }) => value)
 }
 
 init()

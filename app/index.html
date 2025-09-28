@@ -6,12 +6,13 @@
   </head>
   <body>
     <h1>Shuffle</h1>
-    <form>
+    <form id="form">
       <label for="enumeration">Enumeration (eg “6”, “3,6” or “5-5”)</label>
       <input type="text" id="enumeration" pattern="\d+([,\-]?\d+)*">
       <br>
       <label for="fodder">Fodder (letters to shuffle)</label>
       <input type="text" id="fodder">
+      <input type="submit" value="Shuffle">
       <div id="shuffled"></div>
       <div id="solution"></div>
     </form>

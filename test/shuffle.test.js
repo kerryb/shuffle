@@ -26,14 +26,29 @@ test("only accepts letters in fodder, and converts them to upper case", async ({
 
 test("creates solution inputs after inputting enumeration", async ({ page }) => {
   const enumeration = page.getByLabel("Enumeration")
-  await enumeration.fill("4-5,5,9")
+  await enumeration.fill("3-3,4")
   await enumeration.blur()
   const input = page.locator("#solution input")
-  await expect(input).toHaveCount(23)
+  await expect(input).toHaveCount(10)
 
-  const hyphen = page.locator("#solution *:nth-child(5)")
+  const hyphen = page.locator("#solution *:nth-child(4)")
   await expect(hyphen).toHaveText("-")
 
-  const space = page.locator("#solution *:nth-child(11)")
+  const space = page.locator("#solution *:nth-child(8)")
   await expect(space).toHaveText(" ")
+})
+
+test("shuffles letters when form is submitted", async ({ page }) => {
+  const fodder = page.getByLabel("Fodder")
+  await fodder.fill("OTTERPANIC")
+
+  const shuffle = page.locator("input[type='submit']")
+  await shuffle.click()
+
+  const letterO = page.locator("#shuffled .letter >> text='O'")
+  await expect(letterO).toHaveCount(1)
+  const letterT = page.locator("#shuffled .letter >> text='T'")
+  await expect(letterT).toHaveCount(2)
+  const letterC = page.locator("#shuffled .letter >> text='C'")
+  await expect(letterC).toHaveCount(1)
 })
