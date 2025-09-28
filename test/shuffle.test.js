@@ -23,3 +23,17 @@ test("only accepts letters in fodder, and converts them to upper case", async ({
   }
   await expect(fodder).toHaveValue("ABC")
 })
+
+test("creates solution inputs after inputting enumeration", async ({ page }) => {
+  const enumeration = page.getByLabel("Enumeration")
+  await enumeration.fill("4-5,5,9")
+  await enumeration.blur()
+  const input = page.locator("#solution input")
+  await expect(input).toHaveCount(23)
+
+  const hyphen = page.locator("#solution *:nth-child(5)")
+  await expect(hyphen).toHaveText("-")
+
+  const space = page.locator("#solution *:nth-child(11)")
+  await expect(space).toHaveText(" ")
+})

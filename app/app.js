@@ -31,13 +31,23 @@ function addSolutionInputs(enumeration) {
 
   for (const value of enumeration.split(/([,-])/)) {
     if (value == ",") {
-      solution.append(" ")
+      addSpan(solution, "space", " ")
+      // solution.append(" ")
     } else if (value == "-") {
-      solution.append("-")
+      addSpan(solution, "hyphen", "-")
+      // solution.append("-")
     } else {
       addSolutionWord(solution, parseInt(value))
     }
   }
+}
+
+function addSpan(solution, className, character) {
+  const element = document.createElement("span")
+  element.className = className
+  const text = document.createTextNode(character)
+  element.appendChild(text)
+  solution.appendChild(element)
 }
 
 function addSolutionWord(solution, letterCount) {
