@@ -15,3 +15,11 @@ test("only accepts digits, commas and hyphens in enumeration", async ({ page }) 
   }
   await expect(enumeration).toHaveValue("4-2,5")
 })
+
+test("only accepts letters in fodder, and converts them to upper case", async ({ page }) => {
+  const fodder = page.getByLabel("Fodder")
+  for (const key of ["a", "B", " ", "1", "_", "c"]) {
+    await fodder.press(key)
+  }
+  await expect(fodder).toHaveValue("ABC")
+})

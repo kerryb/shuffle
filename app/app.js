@@ -4,13 +4,18 @@ function init() {
   enumeration.addEventListener("change", updateEnumeration)
 
   const fodder = document.getElementById("fodder")
-    fodder.addEventListener("beforeinput", (e) => checkInput(e, /a-z/i))
+    fodder.addEventListener("beforeinput", (e) => checkInput(e, /[a-z]/i))
+    fodder.addEventListener("input", upcaseInput)
 }
 
 function checkInput(e, pattern) {
   if (e.inputType == "insertText" && !pattern.test(e.data)) {
     e.preventDefault()
   }
+}
+
+function upcaseInput(e) {
+  e.target.value = e.target.value.toUpperCase()
 }
 
 function updateEnumeration(e) {
