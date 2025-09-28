@@ -2,10 +2,19 @@ function init() {
   const enumeration = document.getElementById("enumeration")
   enumeration.addEventListener("beforeinput", checkEnumerationCharacterValid)
   enumeration.addEventListener("change", updateEnumeration)
+
+  const fodder = document.getElementById("fodder")
+  fodder.addEventListener("beforeinput", checkFodderCharacterValid)
 }
 
 function checkEnumerationCharacterValid(e) {
   if (!/[\d,-]/.test(e.data)) {
+    e.preventDefault()
+  }
+}
+
+function checkFodderCharacterValid(e) {
+  if (!/[a-z]/i.test(e.data)) {
     e.preventDefault()
   }
 }
