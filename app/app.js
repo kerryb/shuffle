@@ -36,12 +36,12 @@ function addSolutionInputs(enumeration) {
     } else if (value == "-") {
       solution.append("-")
     } else {
-      addSolutionWord(parseInt(value))
+      addSolutionWord(solution, parseInt(value))
     }
   }
 }
 
-function addSolutionWord(letterCount) {
+function addSolutionWord(solution, letterCount) {
   for (let n = 0; n < letterCount; n++) {
     const element = document.createElement("input")
 
