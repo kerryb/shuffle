@@ -6,15 +6,14 @@ function enumerationChanged(e) {
     const solution = document.getElementById("solution")
     solution.innerHTML = ""
 
-    const iterator = e.target.value[Symbol.iterator]()
-    let char = iterator.next()
-    while (!char.done) {
-      if (char.value == "/") {
+    for (const value of e.target.value.split(/([,-])/)) {
+      console.log(value)
+      if (value == ",") {
         solution.append(" ")
-      } else if (char.value == "/" || char.value == "-") {
+      } else if (value == "-") {
         solution.append("-")
       } else {
-        for (let n = 0; n < parseInt(char.value); n++) {
+        for (let n = 0; n < parseInt(value); n++) {
           const element = document.createElement("input")
 
           const maxlength = document.createAttribute("maxlength")
@@ -27,7 +26,6 @@ function enumerationChanged(e) {
           solution.appendChild(element)
         }
       }
-      char = iterator.next()
     }
   }
 }
