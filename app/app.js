@@ -30,7 +30,6 @@ function addSolutionInputs(enumeration) {
   solution.innerHTML = ""
 
   for (const value of enumeration.split(/([,-])/)) {
-    console.log(value)
     if (value == ",") {
       solution.append(" ")
     } else if (value == "-") {
