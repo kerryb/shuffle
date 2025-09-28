@@ -1,6 +1,16 @@
-document.getElementById("enumeration").addEventListener("change", enumerationChanged)
+function init() {
+  const enumeration = document.getElementById("enumeration")
+  enumeration.addEventListener("beforeinput", checkEnumerationCharacterValid)
+  enumeration.addEventListener("change", updateEnumeration)
+}
 
-function enumerationChanged(e) {
+function checkEnumerationCharacterValid(e) {
+  if (!/[\d,-]/.test(e.data)) {
+    e.preventDefault()
+  }
+}
+
+function updateEnumeration(e) {
   e.target.reportValidity()
   if (e.target.validity.valid) {
     addSolutionInputs(e.target.value)
@@ -37,3 +47,5 @@ function addSolutionWord(letterCount) {
     solution.appendChild(element)
   }
 }
+
+init()
