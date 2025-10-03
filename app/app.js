@@ -24,8 +24,13 @@ function upcaseInput(e) {
 function updateEnumeration(e) {
   e.target.reportValidity()
   if (e.target.validity.valid) {
+    document.getElementById("fodder").maxLength = letterCount(e.target.value)
     addSolutionInputs(e.target.value)
   }
+}
+
+function letterCount(enumeration) {
+  return enumeration.split(/[,-]/).map((n) => parseInt(n)).reduce((a, b) => a + b)
 }
 
 function addSolutionInputs(enumeration) {
@@ -64,16 +69,22 @@ function addSolutionWord(solution, letterCount) {
     const size = document.createAttribute("size")
     size.value = "1"
     element.setAttributeNode(size)
+    element.addEventListener("beforeinput", checkSolutionInput)
     solution.appendChild(element)
   }
+}
+
+function checkSolutionInput(e) {
+  e.preventDefault()
 }
 
 function shuffleLetters(e) {
   e.preventDefault()
   const fodder = document.getElementById("fodder")
   const shuffled = document.getElementById("shuffled")
+  window.letters = fodder.value.split("")
 
-  for (const letter of shuffleArray(fodder.value.split(""))) {
+  for (const letter of shuffleArray(window.letters)) {
     const element = document.createElement("span")
     element.className = "letter"
     const text = document.createTextNode(letter)

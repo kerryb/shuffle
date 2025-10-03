@@ -18,10 +18,21 @@ test("only accepts digits, commas and hyphens in enumeration", async ({ page }) 
 
 test("only accepts letters in fodder, and converts them to upper case", async ({ page }) => {
   const fodder = page.getByLabel("Fodder")
-  for (const key of ["a", "B", " ", "1", "_", "c"]) {
+  for (const key of "a B-c?.".split("")) {
     await fodder.press(key)
   }
   await expect(fodder).toHaveValue("ABC")
+})
+
+test("only accepts the number of letters from the enumeration in fodder", async ({ page }) => {
+  const enumeration = page.getByLabel("Enumeration")
+  await enumeration.fill("3-3,4")
+  await enumeration.blur()
+  const fodder = page.getByLabel("Fodder")
+  for (const key of "otterpanicfoo".split("")) {
+    await fodder.press(key)
+  }
+  await expect(fodder).toHaveValue("OTTERPANIC")
 })
 
 test("creates solution inputs after inputting enumeration", async ({ page }) => {
@@ -51,4 +62,18 @@ test("shuffles letters when form is submitted", async ({ page }) => {
   await expect(letterT).toHaveCount(2)
   const letterC = page.locator("#shuffled .letter >> text='C'")
   await expect(letterC).toHaveCount(1)
+})
+
+test("only allows available letters to be entered in the solution", async ({ page }) => {
+  const enumeration = page.getByLabel("Enumeration")
+  await enumeration.fill("3-3,4")
+  const fodder = page.getByLabel("Fodder")
+  await fodder.fill("OTTERPANIC")
+
+  const shuffle = page.locator("input[type='submit']")
+  await shuffle.click()
+
+  const letter_1 = page.locator("#solution *:nth-child(1)")
+  await letter_1.press("X")
+  await expect(letter_1).toHaveValue("")
 })
