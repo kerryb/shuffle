@@ -77,3 +77,20 @@ test("only allows available letters to be entered in the solution", async ({ pag
   await letter_1.press("X")
   await expect(letter_1).toHaveValue("")
 })
+
+test("removes shuffled letters when they’re entered in the solution", async ({ page }) => {
+  const enumeration = page.getByLabel("Enumeration")
+  await enumeration.fill("3-3,4")
+  const fodder = page.getByLabel("Fodder")
+  await fodder.fill("OTTERPANIC")
+
+  const shuffle = page.locator("input[type='submit']")
+  await shuffle.click()
+
+  const letter_1 = page.locator("#solution *:nth-child(1)")
+  await letter_1.press("T")
+  await expect(letter_1).toHaveValue("T")
+
+  const letterT = page.locator("#shuffled .letter >> text='T'")
+  await expect(letterT).toHaveCount(1)
+})
