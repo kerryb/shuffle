@@ -89,6 +89,7 @@ function shuffleLetters(e) {
   e.preventDefault()
   const fodder = document.getElementById("fodder")
   const shuffled = document.getElementById("shuffled")
+  shuffled.textContent = ""
   window.letters = fodder.value.split("")
 
   for (const letter of shuffleArray(window.letters)) {

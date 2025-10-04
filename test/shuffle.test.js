@@ -55,6 +55,8 @@ test("shuffles letters when form is submitted", async ({ page }) => {
 
   const shuffle = page.locator("input[type='submit']")
   await shuffle.click()
+  expect((await page.locator("#shuffled span.letter").evaluateAll(list => list.map(element => element.textContent)))
+    .join("")).not.toEqual("OTTERPANIC")
 
   const letterO = page.locator("#shuffled .letter >> text='O'")
   await expect(letterO).toHaveCount(1)
@@ -62,6 +64,22 @@ test("shuffles letters when form is submitted", async ({ page }) => {
   await expect(letterT).toHaveCount(2)
   const letterC = page.locator("#shuffled .letter >> text='C'")
   await expect(letterC).toHaveCount(1)
+})
+
+test("reshuffles letters when form is resubmitted", async ({ page }) => {
+  const fodder = page.getByLabel("Fodder")
+  await fodder.fill("OTTERPANIC")
+  const shuffle = page.locator("input[type='submit']")
+  await shuffle.click()
+  const firstShuffle = (await page.locator("#shuffled span.letter").evaluateAll(list => list.map(element => element.textContent)))
+    .join("")
+
+  await shuffle.click()
+  expect((await page.locator("#shuffled span.letter").evaluateAll(list => list.map(element => element.textContent)))
+    .join("")).not.toEqual(firstShuffle)
+
+  const letterO = page.locator("#shuffled .letter >> text='O'")
+  await expect(letterO).toHaveCount(1)
 })
 
 test("only allows available letters to be entered in the solution", async ({ page }) => {
