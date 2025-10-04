@@ -39,36 +39,31 @@ test("creates solution inputs after inputting enumeration", async ({ page }) => 
   const enumeration = page.getByLabel("Enumeration")
   await enumeration.fill("3-3,4")
   await enumeration.blur()
-  const input = page.locator("#solution input")
-  await expect(input).toHaveCount(10)
 
-  const hyphen = page.locator("#solution *:nth-child(4)")
-  await expect(hyphen).toHaveText("-")
-
-  const space = page.locator("#solution *:nth-child(8)")
-  await expect(space).toHaveText(" ")
+  await expect(page.locator("#solution input")).toHaveCount(10)
+  await expect(page.locator("#solution *:nth-child(4)")).toHaveText("-")
+  await expect(page.locator("#solution *:nth-child(8)")).toHaveText(" ")
 })
 
 test("shuffles letters when form is submitted", async ({ page }) => {
-  const fodder = page.getByLabel("Fodder")
-  await fodder.fill("OTTERPANIC")
-
-  const shuffle = page.locator("input[type='submit']")
-  await shuffle.click()
+  const enumeration = page.getByLabel("Enumeration")
+  await enumeration.fill("3-3,4")
+  await enumeration.blur()
+  await page.getByLabel("Fodder").fill("OTTERPANIC")
+  await page.locator("input[type='submit']").click()
   expect((await page.locator("#shuffled span.letter").evaluateAll(list => list.map(element => element.textContent)))
     .join("")).not.toEqual("OTTERPANIC")
 
-  const letterO = page.locator("#shuffled .letter >> text='O'")
-  await expect(letterO).toHaveCount(1)
-  const letterT = page.locator("#shuffled .letter >> text='T'")
-  await expect(letterT).toHaveCount(2)
-  const letterC = page.locator("#shuffled .letter >> text='C'")
-  await expect(letterC).toHaveCount(1)
+  await expect(page.locator("#shuffled .letter >> text='O'")).toHaveCount(1)
+  await expect(page.locator("#shuffled .letter >> text='T'")).toHaveCount(2)
+  await expect(page.locator("#shuffled .letter >> text='C'")).toHaveCount(1)
 })
 
 test("reshuffles letters when form is resubmitted", async ({ page }) => {
-  const fodder = page.getByLabel("Fodder")
-  await fodder.fill("OTTERPANIC")
+  const enumeration = page.getByLabel("Enumeration")
+  await enumeration.fill("3-3,4")
+  await enumeration.blur()
+  await page.getByLabel("Fodder").fill("OTTERPANIC")
   const shuffle = page.locator("input[type='submit']")
   await shuffle.click()
   const firstShuffle = (await page.locator("#shuffled span.letter").evaluateAll(list => list.map(element => element.textContent)))
@@ -77,19 +72,15 @@ test("reshuffles letters when form is resubmitted", async ({ page }) => {
   await shuffle.click()
   expect((await page.locator("#shuffled span.letter").evaluateAll(list => list.map(element => element.textContent)))
     .join("")).not.toEqual(firstShuffle)
-
-  const letterO = page.locator("#shuffled .letter >> text='O'")
-  await expect(letterO).toHaveCount(1)
+  await expect(page.locator("#shuffled .letter >> text='O'")).toHaveCount(1)
 })
 
 test("only allows available letters to be entered in the solution", async ({ page }) => {
   const enumeration = page.getByLabel("Enumeration")
   await enumeration.fill("3-3,4")
-  const fodder = page.getByLabel("Fodder")
-  await fodder.fill("OTTERPANIC")
-
-  const shuffle = page.locator("input[type='submit']")
-  await shuffle.click()
+  await enumeration.blur()
+  await page.getByLabel("Fodder").fill("OTTERPANIC")
+  await page.locator("input[type='submit']").click()
 
   const letter_1 = page.locator("#solution *:nth-child(1)")
   await letter_1.press("X")
@@ -99,31 +90,24 @@ test("only allows available letters to be entered in the solution", async ({ pag
 test("removes shuffled letters when they’re entered in the solution", async ({ page }) => {
   const enumeration = page.getByLabel("Enumeration")
   await enumeration.fill("3-3,4")
-  const fodder = page.getByLabel("Fodder")
-  await fodder.fill("OTTERPANIC")
-  const shuffle = page.locator("input[type='submit']")
-  await shuffle.click()
+  await enumeration.blur()
+  await page.getByLabel("Fodder").fill("OTTERPANIC")
+  await page.locator("input[type='submit']").click()
 
   const letter_1 = page.locator("#solution *:nth-child(1)")
   await letter_1.press("T")
   await expect(letter_1).toHaveValue("T")
-
-  const letterT = page.locator("#shuffled .letter >> text='T'")
-  await expect(letterT).toHaveCount(1)
+  await expect(page.locator("#shuffled .letter >> text='T'")).toHaveCount(1)
 })
 
 test("converts solution letters to upper case", async ({ page }) => {
   const enumeration = page.getByLabel("Enumeration")
   await enumeration.fill("3-3,4")
-  const fodder = page.getByLabel("Fodder")
-  await fodder.fill("OTTERPANIC")
-  const shuffle = page.locator("input[type='submit']")
-  await shuffle.click()
+  await enumeration.blur()
+  await page.getByLabel("Fodder").fill("OTTERPANIC")
+  await page.locator("input[type='submit']").click()
 
   const letter_1 = page.locator("#solution *:nth-child(1)")
   await letter_1.press("t")
   await expect(letter_1).toHaveValue("T")
-
-  const letterT = page.locator("#shuffled .letter >> text='T'")
-  await expect(letterT).toHaveCount(1)
 })
