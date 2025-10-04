@@ -76,11 +76,12 @@ function addSolutionWord(solution, letterCount) {
 
 function checkSolutionInput(e) {
   e.preventDefault()
+  const letter = e.data.toUpperCase()
   const letters = Array.from(document.querySelectorAll("#shuffled span.letter"))
-  const index = letters.findIndex((letter) => letter.innerHTML == e.data)
+  const index = letters.findIndex((span) => span.innerHTML == letter)
   if (index != -1) {
     letters[index].remove()
-    e.target.value = e.data
+    e.target.value = letter
   }
 }
 
