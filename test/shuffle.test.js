@@ -96,3 +96,12 @@ test("converts solution letters to upper case", async ({ pageWithFodder }) => {
   await letter_1.press("t")
   await expect(letter_1).toHaveValue("T")
 })
+
+test("returns a letter to the shuffle when deleted from the solution", async ({ pageWithFodder }) => {
+  const page = pageWithFodder
+  const letter_1 = page.locator("#solution *:nth-child(1)")
+  await letter_1.press("T")
+  await letter_1.press("Backspace")
+  await expect(letter_1).toHaveValue("")
+  await expect(page.locator("#shuffled .letter >> text='T'")).toHaveCount(2)
+})

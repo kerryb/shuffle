@@ -76,12 +76,22 @@ function addSolutionWord(solution, letterCount) {
 
 function checkSolutionInput(e) {
   e.preventDefault()
-  const letter = e.data.toUpperCase()
-  const letters = Array.from(document.querySelectorAll("#shuffled span.letter"))
-  const index = letters.findIndex((span) => span.innerHTML == letter)
-  if (index != -1) {
-    letters[index].remove()
-    e.target.value = letter
+  if (e.inputType.startsWith("deleteContentBackward")) {
+    const shuffled = document.getElementById("shuffled")
+    const element = document.createElement("span")
+    element.className = "letter"
+    const text = document.createTextNode(e.target.value)
+    element.appendChild(text)
+    shuffled.appendChild(element)
+    e.target.value = ""
+  } else {
+    const letter = e.data.toUpperCase()
+    const letters = Array.from(document.querySelectorAll("#shuffled span.letter"))
+    const index = letters.findIndex((span) => span.innerHTML == letter)
+    if (index != -1) {
+      letters[index].remove()
+      e.target.value = letter
+    }
   }
 }
 
