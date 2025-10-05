@@ -78,11 +78,7 @@ function checkSolutionInput(e) {
   e.preventDefault()
   if (e.inputType.startsWith("deleteContentBackward")) {
     const shuffled = document.getElementById("shuffled")
-    const element = document.createElement("span")
-    element.className = "letter"
-    const text = document.createTextNode(e.target.value)
-    element.appendChild(text)
-    shuffled.appendChild(element)
+    addLetterToShuffled(shuffled, e.target.value)
     e.target.value = ""
   } else {
     const letter = e.data.toUpperCase()
@@ -103,12 +99,16 @@ function shuffleLetters(e) {
   window.letters = fodder.value.split("")
 
   for (const letter of shuffleArray(window.letters)) {
-    const element = document.createElement("span")
-    element.className = "letter"
-    const text = document.createTextNode(letter)
-    element.appendChild(text)
-    shuffled.appendChild(element)
+    addLetterToShuffled(shuffled, letter)
   }
+}
+
+function addLetterToShuffled(shuffled, letter) {
+  const element = document.createElement("span")
+  element.className = "letter"
+  const text = document.createTextNode(letter)
+  element.appendChild(text)
+  shuffled.appendChild(element)
 }
 
 function shuffleArray(array) {
