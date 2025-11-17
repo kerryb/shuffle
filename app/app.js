@@ -24,8 +24,11 @@ function upcaseInput(e) {
 function updateEnumeration(e) {
   e.target.reportValidity()
   if (e.target.validity.valid) {
-    document.getElementById("fodder").maxLength = letterCount(e.target.value)
+    const fodder = document.getElementById("fodder")
+    fodder.value = ""
+    fodder.maxLength = letterCount(e.target.value)
     addSolutionInputs(e.target.value)
+    document.getElementById("shuffled").textContent = ""
   }
 }
 

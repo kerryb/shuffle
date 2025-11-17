@@ -114,3 +114,15 @@ test("returns a letter to the shuffle when deleted from the solution", async ({ 
   await expect(letter_1).toHaveValue("")
   await expect(page.locator("#shuffled .letter >> text='T'")).toHaveCount(2)
 })
+
+test("clears fodder and solution when enumeration is changed", async ({ pageWithFodder }) => {
+  const page = pageWithFodder
+  const letter_1 = page.locator("#solution *:nth-child(1)")
+  await letter_1.press("T")
+  const enumeration = page.getByLabel("Enumeration")
+  await enumeration.fill("10")
+  await enumeration.blur()
+  await expect(page.getByLabel("Fodder")).toHaveValue("")
+  await expect(page.locator("#shuffled .letter")).toHaveCount(0)
+  await expect(letter_1).toHaveValue("")
+})
