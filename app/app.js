@@ -93,12 +93,17 @@ function checkSolutionInput(e) {
 
 function shuffleLetters(e) {
   e.preventDefault()
-  const fodder = document.getElementById("fodder")
+  let letters = Array.from(document.querySelectorAll("#shuffled span.letter")).map((x) => x.innerHTML)
+  console.log(letters)
+  if (letters.length == 0) {
+    console.log("empty!")
+    letters = document.getElementById("fodder").value.split("")
+    console.log(letters)
+  }
   const shuffled = document.getElementById("shuffled")
   shuffled.textContent = ""
-  window.letters = fodder.value.split("")
 
-  for (const letter of shuffleArray(window.letters)) {
+  for (const letter of shuffleArray(letters)) {
     addLetterToShuffled(shuffled, letter)
   }
 }

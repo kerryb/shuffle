@@ -75,6 +75,15 @@ test("reshuffles letters when form is resubmitted", async ({ pageWithFodder }) =
   await expect(page.locator("#shuffled .letter >> text='O'")).toHaveCount(1)
 })
 
+test("leaves out letters already in solution when reshuffling", async ({ pageWithFodder }) => {
+  const page = pageWithFodder
+  await page.locator("input[type='submit']").click()
+  const letter_1 = page.locator("#solution *:nth-child(1)")
+  await letter_1.press("O")
+  await page.locator("input[type='submit']").click()
+  await expect(page.locator("#shuffled .letter >> text='O'")).toHaveCount(0)
+})
+
 test("only allows available letters to be entered in the solution", async ({ pageWithFodder }) => {
   const page = pageWithFodder
   const letter_1 = page.locator("#solution *:nth-child(1)")
