@@ -1,13 +1,13 @@
 {
-  "dependencies": {
-    "playwright": "^1.55.1"
-  },
+  "dependencies": { },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
     "@playwright/test": "^1.55.1",
     "@types/node": "^24.5.2",
     "eslint": "^9.36.0",
-    "globals": "^16.4.0"
+    "globals": "^16.4.0",
+    "local-web-server": "^5.4.0",
+    "playwright": "^1.55.1"
   },
   "scripts": {}
 }
