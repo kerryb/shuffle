@@ -64,6 +64,14 @@ test("shuffles letters when form is submitted", async ({ pageWithFodder }) => {
   await expect(page.locator("#shuffled .letter >> text='C'")).toHaveCount(1)
 })
 
+test("allows fodder to be submitted with enter key", async ({ pageWithEnumeration }) => {
+  const page = pageWithEnumeration
+  const fodder = page.getByLabel("Fodder")
+  await fodder.fill("OTTERPANIC")
+  await fodder.press("Enter")
+  await expect(page.locator("#shuffled .letter >> text='T'")).toHaveCount(2)
+})
+
 test("reshuffles letters when form is resubmitted", async ({ pageWithFodder }) => {
   const page = pageWithFodder
   const firstShuffle = (await page.locator("#shuffled span.letter").evaluateAll(list => list.map(element => element.textContent)))
@@ -104,6 +112,16 @@ test("converts solution letters to upper case", async ({ pageWithFodder }) => {
   const letter_1 = page.locator("#solution *:nth-child(1)")
   await letter_1.press("t")
   await expect(letter_1).toHaveValue("T")
+})
+
+test("allows solution letters to be overtyped", async ({ pageWithFodder }) => {
+  const page = pageWithFodder
+  const letter_1 = page.locator("#solution *:nth-child(1)")
+  await letter_1.press("T")
+  await letter_1.press("E")
+  await expect(letter_1).toHaveValue("E")
+  await expect(page.locator("#shuffled .letter >> text='T'")).toHaveCount(2)
+  await expect(page.locator("#shuffled .letter >> text='E'")).toHaveCount(0)
 })
 
 test("returns a letter to the shuffle when deleted from the solution", async ({ pageWithFodder }) => {

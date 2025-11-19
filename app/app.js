@@ -64,11 +64,6 @@ function addSpan(solution, className, character) {
 function addSolutionWord(solution, letterCount) {
   for (let n = 0; n < letterCount; n++) {
     const element = document.createElement("input")
-
-    const maxlength = document.createAttribute("maxlength")
-    maxlength.value = "1"
-    element.setAttributeNode(maxlength)
-
     const size = document.createAttribute("size")
     size.value = "1"
     element.setAttributeNode(size)
@@ -80,14 +75,18 @@ function addSolutionWord(solution, letterCount) {
 function checkSolutionInput(e) {
   e.preventDefault()
   if (e.inputType.startsWith("deleteContentBackward")) {
-    const shuffled = document.getElementById("shuffled")
-    addLetterToShuffled(shuffled, e.target.value)
-    e.target.value = ""
+    if (e.target.value != "") {
+      addLetterToShuffled(document.getElementById("shuffled"), e.target.value)
+      e.target.value = ""
+    }
   } else {
     const letter = e.data.toUpperCase()
     const letters = Array.from(document.querySelectorAll("#shuffled span.letter"))
     const index = letters.findIndex((span) => span.innerHTML == letter)
     if (index != -1) {
+      if (e.target.value != "") {
+        addLetterToShuffled(document.getElementById("shuffled"), e.target.value)
+      }
       letters[index].remove()
       e.target.value = letter
     }
@@ -97,11 +96,8 @@ function checkSolutionInput(e) {
 function shuffleLetters(e) {
   e.preventDefault()
   let letters = Array.from(document.querySelectorAll("#shuffled span.letter")).map((x) => x.innerHTML)
-  console.log(letters)
   if (letters.length == 0) {
-    console.log("empty!")
     letters = document.getElementById("fodder").value.split("")
-    console.log(letters)
   }
   const shuffled = document.getElementById("shuffled")
   shuffled.textContent = ""
