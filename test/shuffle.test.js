@@ -15,7 +15,7 @@ const test = base.extend({
 })
 
 test.beforeEach(async ({ page }) => {
-  await page.goto(`file://${process.cwd()}/app/index.html`)
+  await page.goto("/")
 })
 
 test("has title", async ({ page }) => {
