@@ -1,17 +1,17 @@
 function init() {
   const enumeration = document.getElementById("enumeration")
-  enumeration.addEventListener("beforeinput", (e) => checkInput(e, /[\d,-]/))
+  enumeration.addEventListener("beforeinput", (e) => restrictInput(e, /[\d,-]/))
   enumeration.addEventListener("change", updateEnumeration)
 
   const fodder = document.getElementById("fodder")
-  fodder.addEventListener("beforeinput", (e) => checkInput(e, /[a-z]/i))
+  fodder.addEventListener("beforeinput", (e) => restrictInput(e, /[a-z]/i))
   fodder.addEventListener("input", upcaseInput)
 
   const form = document.getElementById("form")
   form.addEventListener("submit", shuffleLetters)
 }
 
-function checkInput(e, pattern) {
+function restrictInput(e, pattern) {
   if (e.inputType == "insertText" && !pattern.test(e.data)) {
     e.preventDefault()
   }
