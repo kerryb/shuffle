@@ -1,4 +1,10 @@
+:root {
+  color-scheme: light dark;
+}
+
 body {
+  color: light-dark(#000, #ccc);
+  background-color: light-dark(white, black);
   font-family: system-ui, sans-serif;
   font-weight: normal;
   width: 30rem;
@@ -28,8 +34,8 @@ input {
 }
 
 input[type='submit']:hover {
-  background: #333;
-  color: #ccc;
+  background: light-dark(#666, #999);
+  color: light-dark(#ccc, #333);
   cursor: pointer;
 }
 
