@@ -1,4 +1,4 @@
-import { default as Shuffled } from "/shuffled.js"
+import { default as Shuffled } from "/modules/shuffled.js"
 
 function addInputs(enumeration) {
   const solution = document.getElementById("solution")

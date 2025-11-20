@@ -1,4 +1,4 @@
-import { default as Solution } from "/solution.js"
+import { default as Solution } from "/modules/solution.js"
 
 function update(e) {
   e.target.reportValidity()

@@ -1,6 +1,6 @@
-import { default as Enumeration } from "/enumeration.js"
-import { default as Shuffled } from "/shuffled.js"
-import { default as Utils } from "/utils.js"
+import { default as Enumeration } from "/modules/enumeration.js"
+import { default as Shuffled } from "/modules/shuffled.js"
+import { default as Utils } from "/modules/utils.js"
 
 function init() {
   const enumeration = document.getElementById("enumeration")
