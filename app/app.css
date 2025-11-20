@@ -39,6 +39,17 @@ input[type='submit']:hover {
   cursor: pointer;
 }
 
+#shuffled {
+  font-size: 2rem;
+  font-weight: bold;
+  display: flex;
+  flex-wrap: wrap;  
+}
+
+#shuffled .letter {
+  width: 5rem;
+}
+
 #solution input {
   width: 1rem;
   margin-right: 0.1rem;
