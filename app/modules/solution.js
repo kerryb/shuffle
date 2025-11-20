@@ -30,6 +30,7 @@ function addSpan(solution, className, character) {
 function addWord(solution, letterCount) {
   for (let n = 0; n < letterCount; n++) {
     const element = document.createElement("input")
+    element.id = `solution-${n}`
     const size = document.createAttribute("size")
     size.value = "1"
     element.setAttributeNode(size)
