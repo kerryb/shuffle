@@ -62,12 +62,20 @@ function setLetterIfValid(event) {
     returnExistingLetterToShuffledIfNotEmpty(event.target.value)
     letters[index].remove()
     event.target.value = letter
+    moveFocusToNextInput(event.target)
   }
 }
 
 function returnExistingLetterToShuffledIfNotEmpty(letter) {
   if (letter != "") {
     Shuffled.addLetter(document.getElementById("shuffled"), letter)
+  }
+}
+
+function moveFocusToNextInput(input) {
+  const nextInput = input.nextSibling
+  if (nextInput != null) {
+    nextInput.focus()
   }
 }
 

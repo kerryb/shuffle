@@ -124,10 +124,23 @@ test("allows solution letters to be overtyped", async ({ pageWithFodder }) => {
   await expect(page.locator("#shuffled .letter >> text='E'")).toHaveCount(0)
 })
 
+test("shifts focus to next solution letter after entering a valid letter", async ({ pageWithFodder }) => {
+  const page = pageWithFodder
+  await page.locator("#solution *:nth-child(1)").press("T")
+  await expect(page.locator("#solution *:nth-child(2)")).toBeFocused()
+})
+
+test("does not shift focus to next solution letter after entering an invalid letter", async ({ pageWithFodder }) => {
+  const page = pageWithFodder
+  await page.locator("#solution *:nth-child(1)").press("4")
+  await expect(page.locator("#solution *:nth-child(1)")).toBeFocused()
+})
+
 test("returns a letter to the shuffle when deleted from the solution", async ({ pageWithFodder }) => {
   const page = pageWithFodder
   const letter_1 = page.locator("#solution *:nth-child(1)")
   await letter_1.press("T")
+  await letter_1.focus()
   await letter_1.press("Backspace")
   await expect(letter_1).toHaveValue("")
   await expect(page.locator("#shuffled .letter >> text='T'")).toHaveCount(2)
