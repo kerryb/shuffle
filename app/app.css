@@ -1,10 +1,28 @@
-:root {
-  color-scheme: light dark;
+@media (prefers-color-scheme: light) {
+  body {
+    color: #000;
+    background-color: #fff;
+  }
+
+  input[type='submit']:hover {
+    background: #666;
+    color: #ccc;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    color: #ccc;
+    background-color: #000;
+  }
+
+  input[type='submit']:hover {
+    background: #999;
+    color: #333;
+  }
 }
 
 body {
-  color: light-dark(#000, #ccc);
-  background-color: light-dark(white, black);
   font-family: system-ui, sans-serif;
   font-weight: normal;
   width: 30rem;
@@ -34,8 +52,6 @@ input {
 }
 
 input[type='submit']:hover {
-  background: light-dark(#666, #999);
-  color: light-dark(#ccc, #333);
   cursor: pointer;
 }
 
