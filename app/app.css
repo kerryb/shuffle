@@ -67,8 +67,10 @@ input[type='submit']:hover {
 }
 
 #solution input {
-  width: 1rem;
+  width: 2rem;
   margin-right: 0.1rem;
+  padding: 0.4rem 0.2rem;
+  text-align: center;
 }
 
 span.hyphen, span.space {
