@@ -7,10 +7,8 @@ function addInputs(enumeration) {
   for (const value of enumeration.split(/([,-])/)) {
     if (value == ",") {
       addSpan(solution, "space", " ")
-      // solution.append(" ")
     } else if (value == "-") {
       addSpan(solution, "hyphen", "-")
-      // solution.append("-")
     } else {
       addWord(solution, parseInt(value))
     }
