@@ -5,13 +5,17 @@ function addInputs(enumeration) {
   solution.innerHTML = ""
 
   for (const value of enumeration.split(/([,-])/)) {
-    if (value == ",") {
-      addSpan(solution, "space", " ")
-    } else if (value == "-") {
-      addSpan(solution, "hyphen", "-")
-    } else {
-      addWord(solution, parseInt(value))
-    }
+    addInput(solution, value)
+  }
+}
+
+function addInput(solution, value) {
+  if (value == ",") {
+    addSpan(solution, "space", " ")
+  } else if (value == "-") {
+    addSpan(solution, "hyphen", "-")
+  } else {
+    addWord(solution, parseInt(value))
   }
 }
 
@@ -34,24 +38,36 @@ function addWord(solution, letterCount) {
   }
 }
 
-function checkInput(e) {
-  e.preventDefault()
-  if (e.inputType.startsWith("deleteContentBackward")) {
-    if (e.target.value != "") {
-      Shuffled.addLetter(document.getElementById("shuffled"), e.target.value)
-      e.target.value = ""
-    }
+function checkInput(event) {
+  event.preventDefault()
+  if (event.inputType.startsWith("deleteContentBackward")) {
+    deleteLetterIfPresent(event.target)
   } else {
-    const letter = e.data.toUpperCase()
-    const letters = Array.from(document.querySelectorAll("#shuffled span.letter"))
-    const index = letters.findIndex((span) => span.innerHTML == letter)
-    if (index != -1) {
-      if (e.target.value != "") {
-        Shuffled.addLetter(document.getElementById("shuffled"), e.target.value)
-      }
-      letters[index].remove()
-      e.target.value = letter
-    }
+    setLetterIfValid(event)
+  }
+}
+
+function deleteLetterIfPresent(element) {
+  if (element.value != "") {
+    Shuffled.addLetter(document.getElementById("shuffled"), element.value)
+    element.value = ""
+  }
+}
+
+function setLetterIfValid(event) {
+  const letter = event.data.toUpperCase()
+  const letters = Array.from(document.querySelectorAll("#shuffled span.letter"))
+  const index = letters.findIndex((span) => span.innerHTML == letter)
+  if (index != -1) {
+    returnExistingLetterToShuffledIfNotEmpty(event.target.value)
+    letters[index].remove()
+    event.target.value = letter
+  }
+}
+
+function returnExistingLetterToShuffledIfNotEmpty(letter) {
+  if (letter != "") {
+    Shuffled.addLetter(document.getElementById("shuffled"), letter)
   }
 }
 

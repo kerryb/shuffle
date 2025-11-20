@@ -3,7 +3,7 @@ import { default as Utils } from "/modules/utils.js"
 
 function init() {
   const fodder = document.getElementById("fodder")
-  fodder.addEventListener("beforeinput", (e) => Utils.restrictInput(e, /[a-z]/i))
+  fodder.addEventListener("beforeinput", (event) => Utils.restrictInput(event, /[a-z]/i))
   fodder.addEventListener("input", Utils.upcaseInput)
 
   const form = document.getElementById("form")

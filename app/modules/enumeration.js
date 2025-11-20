@@ -3,19 +3,23 @@ import { default as Utils } from "/modules/utils.js"
 
 function init() {
   const enumeration = document.getElementById("enumeration")
-  enumeration.addEventListener("beforeinput", (e) => Utils.restrictInput(e, /[\d,-]/))
-  enumeration.addEventListener("change", update)
+  enumeration.addEventListener("beforeinput", (event) => Utils.restrictInput(event, /[\d,-]/))
+  enumeration.addEventListener("change", updateIfValid)
 }
 
-function update(e) {
-  e.target.reportValidity()
-  if (e.target.validity.valid) {
-    const fodder = document.getElementById("fodder")
-    fodder.value = ""
-    fodder.maxLength = letterCount(e.target.value)
-    Solution.addInputs(e.target.value)
-    document.getElementById("shuffled").textContent = ""
+function updateIfValid(event) {
+  event.target.reportValidity()
+  if (event.target.validity.valid) {
+    update(event.target.value)
   }
+}
+
+function update(value) {
+  const fodder = document.getElementById("fodder")
+  fodder.value = ""
+  fodder.maxLength = letterCount(value)
+  Solution.addInputs(value)
+  document.getElementById("shuffled").textContent = ""
 }
 
 function letterCount(enumeration) {
