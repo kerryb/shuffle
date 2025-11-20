@@ -10,4 +10,18 @@ function init() {
   form.addEventListener("submit", Shuffled.shuffleLetters)
 }
 
-export default { init }
+function element() {
+  return document.getElementById("fodder")
+}
+
+function update(value) {
+  const fodder = element()
+  fodder.value = ""
+  fodder.maxLength = letterCount(value)
+}
+
+function letterCount(enumeration) {
+  return enumeration.split(/[,-]/).map((n) => parseInt(n)).reduce((a, b) => a + b)
+}
+
+export default { init, element, update }

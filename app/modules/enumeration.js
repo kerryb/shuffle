@@ -1,10 +1,16 @@
+import { default as Fodder } from "/modules/fodder.js"
+import { default as Shuffled } from "/modules/shuffled.js"
 import { default as Solution } from "/modules/solution.js"
 import { default as Utils } from "/modules/utils.js"
 
 function init() {
-  const enumeration = document.getElementById("enumeration")
+  const enumeration = element()
   enumeration.addEventListener("beforeinput", (event) => Utils.restrictInput(event, /[\d,-]/))
   enumeration.addEventListener("change", updateIfValid)
+}
+
+function element() {
+  return document.getElementById("enumeration")
 }
 
 function updateIfValid(event) {
@@ -15,15 +21,9 @@ function updateIfValid(event) {
 }
 
 function update(value) {
-  const fodder = document.getElementById("fodder")
-  fodder.value = ""
-  fodder.maxLength = letterCount(value)
+  Fodder.update(value)
   Solution.addInputs(value)
-  document.getElementById("shuffled").textContent = ""
-}
-
-function letterCount(enumeration) {
-  return enumeration.split(/[,-]/).map((n) => parseInt(n)).reduce((a, b) => a + b)
+  Shuffled.clear()
 }
 
 export default { init, update }

@@ -1,10 +1,19 @@
+import { default as Fodder } from "/modules/fodder.js"
 import { default as Utils } from "/modules/utils.js"
+
+function element() {
+  return document.getElementById("shuffled")
+}
+
+function letterElements() {
+  return document.querySelectorAll("#shuffled span.letter")
+}
 
 function shuffleLetters(event) {
   event.preventDefault()
   const letters = existingShuffledLettersOrFodder()
 
-  const shuffled = document.getElementById("shuffled")
+  const shuffled = element()
   shuffled.textContent = ""
 
   for (const letter of Utils.shuffleArray(letters)) {
@@ -12,14 +21,17 @@ function shuffleLetters(event) {
   }
 }
 
-
 function existingShuffledLettersOrFodder() {
-  const letters = Array.from(document.querySelectorAll("#shuffled span.letter")).map((x) => x.innerHTML)
+  const letters = Array.from(letterElements()).map((x) => x.innerHTML)
   if (letters.length > 0) {
     return letters
   } else {
-    return document.getElementById("fodder").value.split("")
+    return Fodder.element().value.split("")
   }
+}
+
+function clear() {
+  element().textContent = ""
 }
 
 function addLetter(shuffled, letter) {
@@ -30,4 +42,4 @@ function addLetter(shuffled, letter) {
   shuffled.appendChild(element)
 }
 
-export default { shuffleLetters, addLetter }
+export default { shuffleLetters, clear, addLetter }
