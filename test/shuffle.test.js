@@ -86,7 +86,7 @@ test("reshuffles letters when form is resubmitted", async ({ pageWithFodder }) =
 test("leaves out letters already in solution when reshuffling", async ({ pageWithFodder }) => {
   const page = pageWithFodder
   await page.locator("input[type='submit']").click()
-  const letter_1 = page.locator("#solution *:nth-child(1)")
+  const letter_1 = page.locator("#solution input:nth-of-type(1)")
   await letter_1.press("O")
   await page.locator("input[type='submit']").click()
   await expect(page.locator("#shuffled .letter >> text='O'")).toHaveCount(0)
@@ -94,14 +94,14 @@ test("leaves out letters already in solution when reshuffling", async ({ pageWit
 
 test("only allows available letters to be entered in the solution", async ({ pageWithFodder }) => {
   const page = pageWithFodder
-  const letter_1 = page.locator("#solution *:nth-child(1)")
+  const letter_1 = page.locator("#solution input:nth-of-type(1)")
   await letter_1.press("X")
   await expect(letter_1).toHaveValue("")
 })
 
 test("removes shuffled letters when they’re entered in the solution", async ({ pageWithFodder }) => {
   const page = pageWithFodder
-  const letter_1 = page.locator("#solution *:nth-child(1)")
+  const letter_1 = page.locator("#solution input:nth-of-type(1)")
   await letter_1.press("T")
   await expect(letter_1).toHaveValue("T")
   await expect(page.locator("#shuffled .letter >> text='T'")).toHaveCount(1)
@@ -109,14 +109,14 @@ test("removes shuffled letters when they’re entered in the solution", async ({
 
 test("converts solution letters to upper case", async ({ pageWithFodder }) => {
   const page = pageWithFodder
-  const letter_1 = page.locator("#solution *:nth-child(1)")
+  const letter_1 = page.locator("#solution input:nth-of-type(1)")
   await letter_1.press("t")
   await expect(letter_1).toHaveValue("T")
 })
 
 test("allows solution letters to be overtyped", async ({ pageWithFodder }) => {
   const page = pageWithFodder
-  const letter_1 = page.locator("#solution *:nth-child(1)")
+  const letter_1 = page.locator("#solution input:nth-of-type(1)")
   await letter_1.press("T")
   await letter_1.press("E")
   await expect(letter_1).toHaveValue("E")
@@ -124,21 +124,51 @@ test("allows solution letters to be overtyped", async ({ pageWithFodder }) => {
   await expect(page.locator("#shuffled .letter >> text='E'")).toHaveCount(0)
 })
 
-test("shifts focus to next solution letter after entering a valid letter", async ({ pageWithFodder }) => {
+test("shifts focus to the next solution letter after entering a valid letter", async ({ pageWithFodder }) => {
   const page = pageWithFodder
-  await page.locator("#solution *:nth-child(1)").press("T")
-  await expect(page.locator("#solution *:nth-child(2)")).toBeFocused()
+  await page.locator("#solution input:nth-of-type(1)").press("T")
+  await expect(page.locator("#solution input:nth-of-type(2)")).toBeFocused()
 })
 
-test("does not shift focus to next solution letter after entering an invalid letter", async ({ pageWithFodder }) => {
+test("does not shift focus after entering an invalid letter", async ({ pageWithFodder }) => {
   const page = pageWithFodder
-  await page.locator("#solution *:nth-child(1)").press("4")
-  await expect(page.locator("#solution *:nth-child(1)")).toBeFocused()
+  await page.locator("#solution input:nth-of-type(1)").press("4")
+  await expect(page.locator("#solution input:nth-of-type(1)")).toBeFocused()
+})
+
+test("skips past hyphens when shifting focus", async ({ pageWithFodder }) => {
+  const page = pageWithFodder
+  await page.locator("#solution input:nth-of-type(3)").press("N")
+  await expect(page.locator("#solution input:nth-of-type(4)")).toBeFocused()
+})
+
+test("skips past spaces when shifting focus", async ({ pageWithFodder }) => {
+  const page = pageWithFodder
+  await page.locator("#solution input:nth-of-type(6)").press("T")
+  await expect(page.locator("#solution input:nth-of-type(7)")).toBeFocused()
+})
+
+test("does not shift focus when deleting a letter", async ({ pageWithFodder }) => {
+  const page = pageWithFodder
+  await page.locator("#solution input:nth-of-type(1)").press("T")
+  const letter_2 = page.locator("#solution input:nth-of-type(2)")
+  await letter_2.press("I")
+  await letter_2.focus()
+  await letter_2.press("Backspace")
+  await expect(letter_2).toBeFocused()
+})
+
+test("shifts focus back a letter when hitting backspace in an empty input", async ({ pageWithFodder }) => {
+  const page = pageWithFodder
+  const letter_2 = page.locator("#solution input:nth-of-type(2)")
+  await letter_2.focus()
+  await letter_2.press("Backspace")
+  await expect(page.locator("#solution input:nth-of-type(1)")).toBeFocused()
 })
 
 test("returns a letter to the shuffle when deleted from the solution", async ({ pageWithFodder }) => {
   const page = pageWithFodder
-  const letter_1 = page.locator("#solution *:nth-child(1)")
+  const letter_1 = page.locator("#solution input:nth-of-type(1)")
   await letter_1.press("T")
   await letter_1.focus()
   await letter_1.press("Backspace")
@@ -148,7 +178,7 @@ test("returns a letter to the shuffle when deleted from the solution", async ({ 
 
 test("clears fodder and solution when enumeration is changed", async ({ pageWithFodder }) => {
   const page = pageWithFodder
-  const letter_1 = page.locator("#solution *:nth-child(1)")
+  const letter_1 = page.locator("#solution input:nth-of-type(1)")
   await letter_1.press("T")
   const enumeration = page.getByLabel("Enumeration")
   await enumeration.fill("10")

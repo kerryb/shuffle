@@ -31,29 +31,36 @@ function addWord(solution, letterCount) {
   for (let n = 0; n < letterCount; n++) {
     const element = document.createElement("input")
     element.id = `solution-${n}`
-    element.addEventListener("beforeinput", checkInput)
+    element.addEventListener("keydown", checkInput)
     solution.appendChild(element)
   }
 }
 
 function checkInput(event) {
-  event.preventDefault()
-  if (event.inputType.startsWith("deleteContentBackward")) {
-    deleteLetterIfPresent(event.target)
-  } else {
+  if (event.key == "Backspace") {
+    event.preventDefault()
+    deleteLetterOrMoveFocusToPreviousLetter(event.target)
+  } else if (isNormalCharacter(event)) {
+    event.preventDefault()
     setLetterIfValid(event)
   }
 }
 
-function deleteLetterIfPresent(element) {
-  if (element.value != "") {
+function isNormalCharacter(event) {
+  return event.key.length == 1 && !event.altKey && !event.ctrlKey && !event.metaKey
+}
+
+function deleteLetterOrMoveFocusToPreviousLetter(element) {
+  if (element.value == "") {
+    moveFocusToPreviousInput(element)
+  } else {
     Shuffled.addLetter(document.getElementById("shuffled"), element.value)
     element.value = ""
   }
 }
 
 function setLetterIfValid(event) {
-  const letter = event.data.toUpperCase()
+  const letter = event.key.toUpperCase()
   const letters = Array.from(document.querySelectorAll("#shuffled span.letter"))
   const index = letters.findIndex((span) => span.innerHTML == letter)
   if (index != -1) {
@@ -72,8 +79,23 @@ function returnExistingLetterToShuffledIfNotEmpty(letter) {
 
 function moveFocusToNextInput(input) {
   const nextInput = input.nextSibling
-  if (nextInput != null) {
+  if (nextInput == null) {
+    return
+  } else if (nextInput.tagName == "INPUT") {
     nextInput.focus()
+  } else {
+    moveFocusToNextInput(nextInput)
+  }
+}
+
+function moveFocusToPreviousInput(input) {
+  const previousInput = input.previousSibling
+  if (previousInput == null) {
+    return
+  } else if (previousInput.tagName == "INPUT") {
+    previousInput.focus()
+  } else {
+    moveFocusToPreviousInput(previousInput)
   }
 }
 
